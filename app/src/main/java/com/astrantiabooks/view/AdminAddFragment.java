@@ -19,8 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.AddBookActivity; // Masih dipakai jika Edit butuh pindah activity, tapi untuk Add pakai dialog
-import com.astrantiabooks.adapters.AdminBukuAdapter;
+import com.astrantiabooks.controller.adapters.AdminBukuAdapter;
 import com.astrantiabooks.models.Buku;
 import com.astrantiabooks.models.Promotion;
 import com.bumptech.glide.Glide;

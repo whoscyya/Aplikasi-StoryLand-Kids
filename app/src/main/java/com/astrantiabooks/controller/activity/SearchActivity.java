@@ -1,4 +1,4 @@
-package com.astrantiabooks.activities;
+package com.astrantiabooks.controller;
 
 import android.content.Intent;
 import android.os.Bundle;

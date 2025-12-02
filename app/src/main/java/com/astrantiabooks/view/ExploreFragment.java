@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.SearchActivity;
-import com.astrantiabooks.adapters.UserBukuAdapter;
+import com.astrantiabooks.controller.activity.SearchActivity;
+import com.astrantiabooks.controller.adapters.UserBukuAdapter;
 import com.astrantiabooks.models.Buku;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

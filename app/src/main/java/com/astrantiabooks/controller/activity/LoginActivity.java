@@ -1,16 +1,16 @@
-package com.astrantiabooks.activities;
+package com.astrantiabooks.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.astrantiabooks.models.PrefManager;
+
 import com.astrantiabooks.R;
 import com.astrantiabooks.models.LocalData;
+import com.astrantiabooks.models.PrefManager;
 import com.astrantiabooks.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,21 +33,28 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Inisialisasi Firebase
         mAuth = FirebaseAuth.getInstance();
-
-        // Pastikan URL ini SAMA PERSIS dengan di Firebase Console Anda
         String dbUrl = "https://astrantia-books-28ad6-default-rtdb.asia-southeast1.firebasedatabase.app/";
         mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference();
 
+        // Binding Views (Sesuai XML baru)
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
 
+        // Jika user sudah login (Auto Login), langsung masuk
+        if (mAuth.getCurrentUser() != null) {
+            cekRoleDanRedirect(mAuth.getCurrentUser().getUid());
+        }
+
         btnLogin.setOnClickListener(v -> prosesLogin());
 
-        tvRegister.setOnClickListener(v ->
-                startActivity(new Intent(this, RegisterActivity.class)));
+        tvRegister.setOnClickListener(v -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+            // Jangan finish(), agar user bisa back ke login jika salah pencet
+        });
     }
 
     private void prosesLogin() {
@@ -62,11 +69,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setEnabled(false);
         btnLogin.setText("Loading...");
 
-        // 1. Login ke Authentication
         mAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // 2. Ambil data Role dari Database
                         String uid = mAuth.getCurrentUser().getUid();
                         cekRoleDanRedirect(uid);
                     } else {
@@ -86,31 +91,29 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (snapshot.exists()) {
                     User user = snapshot.getValue(User.class);
-
-                    // --- PERBAIKAN PENTING DISINI ---
                     if (user != null) {
-                        user.setUid(uid); // <--- TAMBAHKAN INI (Pastikan UID terisi)
+                        user.setUid(uid);
+                        // Update variable global
+                        LocalData.currentUser = user;
                     }
-                    // --------------------------------
 
-                    // Simpan ke Sesi
+                    // Simpan sesi
                     PrefManager prefManager = new PrefManager(LoginActivity.this);
                     prefManager.saveUser(user);
 
+                    // Redirect
                     Intent intent;
                     if (user != null && "admin".equals(user.getRole())) {
                         intent = new Intent(LoginActivity.this, AdminMainActivity.class);
-                        Toast.makeText(LoginActivity.this, "Login Mode Admin", Toast.LENGTH_SHORT).show();
                     } else {
                         intent = new Intent(LoginActivity.this, MainActivity.class);
-                        Toast.makeText(LoginActivity.this, "Selamat datang, " + (user != null ? user.getUsername() : ""), Toast.LENGTH_SHORT).show();
                     }
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Data profil user tidak ditemukan!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Data user tidak ditemukan!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -118,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 btnLogin.setEnabled(true);
                 btnLogin.setText("Masuk");
-                Toast.makeText(LoginActivity.this, "Database Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

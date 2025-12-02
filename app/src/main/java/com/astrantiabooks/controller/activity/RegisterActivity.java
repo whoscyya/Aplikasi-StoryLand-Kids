@@ -1,8 +1,9 @@
-package com.astrantiabooks.activities;
+package com.astrantiabooks.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername, etEmail, etPassword;
+    private TextView tvBackToLogin;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -31,8 +33,14 @@ public class RegisterActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etRegisterUsername);
         etEmail = findViewById(R.id.etRegisterEmail);
         etPassword = findViewById(R.id.etRegisterPassword);
+        tvBackToLogin = findViewById(R.id.tvBackToLogin);
 
         findViewById(R.id.btnRegister).setOnClickListener(v -> registerUser());
+
+        // Logic Tombol Masuk (Redirect ke Login)
+        tvBackToLogin.setOnClickListener(v -> {
+            finish(); // Cukup finish activity ini untuk kembali ke Login di belakangnya
+        });
     }
 
     private void registerUser() {
@@ -57,13 +65,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void simpanKeRealtimeDB(String uid, String email, String username) {
-        // Role otomatis diset "user"
         User newUser = new User(uid, email, username, "user");
 
         mDatabase.child("users").child(uid).setValue(newUser)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(RegisterActivity.this, "Berhasil! Silakan Login.", Toast.LENGTH_SHORT).show();
-                    mAuth.signOut(); // Logout agar user login manual
+                    Toast.makeText(RegisterActivity.this, "Registrasi Berhasil! Silakan Login.", Toast.LENGTH_SHORT).show();
+                    mAuth.signOut();
 
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

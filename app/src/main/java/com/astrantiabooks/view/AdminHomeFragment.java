@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -24,8 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.DetailBukuActivity;
-import com.astrantiabooks.adapters.UserBukuAdapter;
+import com.astrantiabooks.controller.activity.DetailBukuActivity;
+import com.astrantiabooks.controller.adapters.UserBukuAdapter;
 import com.astrantiabooks.models.Buku;
 import com.astrantiabooks.models.LocalData;
 import com.astrantiabooks.models.Promotion;

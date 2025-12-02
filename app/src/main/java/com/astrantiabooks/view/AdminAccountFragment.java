@@ -16,12 +16,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.WelcomeActivity;
+import com.astrantiabooks.controller.activity.LoginActivity; // <--- PENTING: Import LoginActivity
 import com.astrantiabooks.models.LocalData;
 import com.astrantiabooks.models.PrefManager;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser; // Import Penting
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -46,7 +46,7 @@ public class AdminAccountFragment extends Fragment {
             if (tvEmail != null) tvEmail.setText(LocalData.currentUser.getEmail());
             String photoUrl = LocalData.currentUser.getProfileImageUrl();
             if (photoUrl != null && !photoUrl.isEmpty()) {
-                Glide.with(this).load(photoUrl).into(imgProfile);
+                Glide.with(this).load(photoUrl).placeholder(R.drawable.ic_account).into(imgProfile);
             }
         }
 
@@ -67,26 +67,30 @@ public class AdminAccountFragment extends Fragment {
             profilePicLauncher.launch(intent);
         });
 
-        // LOGOUT LOGIC (Bersihkan Sesi)
+        // --- UPDATE LOGOUT DISINI ---
         btnLogout.setOnClickListener(v -> {
             // 1. Logout Firebase
             FirebaseAuth.getInstance().signOut();
 
             // 2. Hapus Sesi Lokal
-            PrefManager prefManager = new PrefManager(getContext());
-            prefManager.logout();
+            if (getContext() != null) {
+                PrefManager prefManager = new PrefManager(getContext());
+                prefManager.logout();
+            }
 
-            // 3. Kembali ke Welcome Screen
-            Intent intent = new Intent(getActivity(), WelcomeActivity.class);
+            // 3. Kembali ke LoginActivity (BUKAN WelcomeActivity)
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            // Clear Task agar tidak bisa back ke halaman admin
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
+        // ----------------------------
 
         return view;
     }
 
     private void uploadProfilePicture(Uri uri) {
-        // PERBAIKAN: Ambil User Langsung dari Firebase Auth (Lebih Aman)
+        // Ambil User Langsung dari Firebase Auth (Lebih Aman)
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user == null) {
@@ -96,7 +100,7 @@ public class AdminAccountFragment extends Fragment {
 
         Toast.makeText(getContext(), "Mengupload foto...", Toast.LENGTH_SHORT).show();
 
-        String uid = user.getUid(); // UID pasti valid dari sini
+        String uid = user.getUid();
         StorageReference storageRef = FirebaseStorage.getInstance().getReference("profile_images").child(uid + ".jpg");
 
         storageRef.putFile(uri).addOnSuccessListener(task ->
@@ -113,7 +117,7 @@ public class AdminAccountFragment extends Fragment {
 
         String dbUrl = "https://astrantia-books-28ad6-default-rtdb.asia-southeast1.firebasedatabase.app/";
         FirebaseDatabase.getInstance(dbUrl).getReference("users")
-                .child(uid) // UID ini sekarang dijamin tidak null
+                .child(uid)
                 .child("profileImageUrl")
                 .setValue(url)
                 .addOnSuccessListener(aVoid -> {

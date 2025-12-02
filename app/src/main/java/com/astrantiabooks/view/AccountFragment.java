@@ -16,9 +16,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.WelcomeActivity;
+import com.astrantiabooks.controller.activity.LoginActivity; // Pastikan import LoginActivity
+// import com.astrantiabooks.activities.WelcomeActivity; // HAPUS INI
 import com.astrantiabooks.models.LocalData;
-import com.astrantiabooks.models.PrefManager; // Import Baru
+import com.astrantiabooks.models.PrefManager;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -67,21 +68,24 @@ public class AccountFragment extends Fragment {
             profilePicLauncher.launch(intent);
         });
 
-        // --- UPDATE LOGOUT ---
+        // --- UPDATE LOGOUT DISINI ---
         btnLogout.setOnClickListener(v -> {
             // 1. Logout Firebase
             FirebaseAuth.getInstance().signOut();
 
-            // 2. Hapus Sesi Lokal (PrefManager)
-            PrefManager prefManager = new PrefManager(getContext());
-            prefManager.logout();
+            // 2. Hapus Sesi Lokal
+            if (getContext() != null) {
+                PrefManager prefManager = new PrefManager(getContext());
+                prefManager.logout();
+            }
 
-            // 3. Redirect ke Welcome
-            Intent intent = new Intent(getActivity(), WelcomeActivity.class);
+            // 3. Redirect ke LoginActivity (BUKAN WelcomeActivity)
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            // Membersihkan back stack agar user tidak bisa tekan 'Back' untuk kembali ke akun
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
-        // ---------------------
+        // ----------------------------
 
         return view;
     }
@@ -103,7 +107,9 @@ public class AccountFragment extends Fragment {
     }
 
     private void updateDatabaseProfileUrl(String uid, String url) {
+        // Gunakan URL default atau ambil dari google-services.json
         String dbUrl = "https://astrantia-books-28ad6-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
         FirebaseDatabase.getInstance(dbUrl).getReference("users")
                 .child(uid)
                 .child("profileImageUrl")
@@ -115,7 +121,7 @@ public class AccountFragment extends Fragment {
 
                         // Update Data Lokal & Sesi
                         LocalData.currentUser.setProfileImageUrl(url);
-                        new PrefManager(getContext()).saveUser(LocalData.currentUser); // Update Sesi juga
+                        new PrefManager(getContext()).saveUser(LocalData.currentUser);
                     }
                 });
     }
