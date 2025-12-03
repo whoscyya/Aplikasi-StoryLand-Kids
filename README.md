@@ -12,15 +12,12 @@
 
 <h2>📅 Timeline Pengerjaan Project</h2>
 <p>
-  <a href="https://trello.com/b/zwEHtHDK/proses-pengerjaan-project-pemrograman-mobile" target="_blank" rel="noopener noreferrer">Link Timeline</a>
+  <a href="https://trello.com/b/zwEHtHDK/proses-pengerjaan-project-pemrograman-mobile" target="_blank" rel="noopener noreferrer">Link Timeline Project Storyline kids</a>
 </p>
 
 <h2>📃 Storyland kids</h2>
 <p>
-  Aplikasi yang akan dikembangkan merupakan sistem informasi berbasis web dengan nama <strong>Cyber Cafe</strong>, yang memungkinkan pelanggan memesan makanan dan minuman secara online melalui pemindaian barcode. Setelah memindai barcode di meja, pelanggan akan diarahkan ke halaman web tempat mereka bisa melihat menu, memilih pesanan, menambah ke keranjang, melakukan checkout, dan membayar secara tunai atau digital.
-</p>
-<p>
-  Sistem ini juga menyediakan nota pembelian otomatis, serta fitur tambahan seperti informasi event kelas dan mentor yang diadakan oleh kafe. Di sisi lain, sistem admin memiliki panel khusus untuk mengelola menu, transaksi, laporan penjualan, dan event kelas. Aplikasi ini dibangun menggunakan framework <strong>Laravel</strong>, dengan database <strong>MySQL</strong>, dan antarmuka yang dibuat menggunakan <strong>Tailwind CSS</strong> dan <strong>Alpine.js</strong> agar tampilan responsif dan mudah digunakan baik di laptop maupun smartphone. Tujuan utamanya adalah meningkatkan efisiensi layanan kafe, mengurangi antrean, serta memberikan pengalaman pemesanan yang cepat, praktis, dan modern bagi pelanggan.
+  Aplikasi buku digital dengan nama Storyland Kids, adalah aplikasi Android yang menyediakan berbagai jenis buku cerita pendek secara digital seperti buku edukasi, misteri, petualangan, romantis, hingga cerita fantasi. Dari beberapa kategori ini, bertujuan untuk meningkatkan minat baca anak anak dalam berimajinasi lewat cerita pendek.
 </p>
 
 <hr />
