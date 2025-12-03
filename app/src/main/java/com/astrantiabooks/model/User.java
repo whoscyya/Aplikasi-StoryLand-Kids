@@ -1,4 +1,4 @@
-package com.astrantiabooks.models;
+package com.astrantiabooks.model;
 
 public class User {
     private String uid;

@@ -1,4 +1,4 @@
-package com.astrantiabooks.models;
+package com.astrantiabooks.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

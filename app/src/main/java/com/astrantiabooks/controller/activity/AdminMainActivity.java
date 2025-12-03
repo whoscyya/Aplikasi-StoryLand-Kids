@@ -1,12 +1,12 @@
-package com.astrantiabooks.controller;
+package com.astrantiabooks.controller.activity;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.astrantiabooks.R;
-import com.astrantiabooks.fragments.AdminAccountFragment;
-import com.astrantiabooks.fragments.AdminAddFragment;
-import com.astrantiabooks.fragments.AdminHomeFragment;
+import com.astrantiabooks.view.AdminAccountFragment;
+import com.astrantiabooks.view.AdminAddFragment;
+import com.astrantiabooks.view.AdminHomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdminMainActivity extends AppCompatActivity {

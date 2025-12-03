@@ -1,8 +1,7 @@
-package com.astrantiabooks.adapters;
+package com.astrantiabooks.controller.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.astrantiabooks.R;
-import com.astrantiabooks.activities.AddBookActivity;
-import com.astrantiabooks.models.Buku;
+// import com.astrantiabooks.controller.activity.AddBookActivity; // Hapus import yang tidak digunakan
+import com.astrantiabooks.model.Buku;
+import com.astrantiabooks.view.AdminAddFragment; // BARU: Import AdminAddFragment
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
@@ -22,10 +22,13 @@ import java.util.List;
 public class AdminBukuAdapter extends RecyclerView.Adapter<AdminBukuAdapter.ViewHolder> {
     private Context context;
     private List<Buku> listBuku;
+    private AdminAddFragment fragment; // FIELD BARU: Menyimpan referensi Fragment
 
-    public AdminBukuAdapter(Context context, List<Buku> listBuku) {
+    // KONSTRUKTOR DIPERBARUI: Menerima 3 argumen
+    public AdminBukuAdapter(Context context, List<Buku> listBuku, AdminAddFragment fragment) {
         this.context = context;
         this.listBuku = listBuku;
+        this.fragment = fragment; // INISIALISASI
     }
 
     @NonNull @Override
@@ -49,11 +52,12 @@ public class AdminBukuAdapter extends RecyclerView.Adapter<AdminBukuAdapter.View
             holder.imgBuku.setImageResource(R.drawable.ic_launcher_background);
         }
 
+        // PERBAIKAN: Tombol Edit sekarang memanggil dialog di fragment
         holder.btnEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AddBookActivity.class);
-            intent.putExtra("IS_EDIT_MODE", true);
-            intent.putExtra("EXTRA_BOOK", buku);
-            context.startActivity(intent);
+            if (fragment != null) {
+                // Panggil fungsi dialog edit di dalam AdminAddFragment
+                fragment.showEditBookDialog(buku);
+            }
         });
 
         holder.btnDelete.setOnClickListener(v -> {

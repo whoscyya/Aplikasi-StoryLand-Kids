@@ -1,4 +1,4 @@
-package com.astrantiabooks.controller;
+package com.astrantiabooks.controller.activity;
 import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.TextView;

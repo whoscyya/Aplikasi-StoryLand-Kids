@@ -1,86 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
     android:background="@android:color/white"
-    tools:context=".activities.LoginActivity">
+    android:paddingBottom="24dp">
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:padding="6dp"
+        android:background="@drawable/bg_circle_light"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#7A848B" />
 
     <TextView
+        android:id="@+id/txtWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selamat Datang"
-        android:textSize="28sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Selamat Datang!"
+        android:textColor="#2D2D2D"
+        android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
     <TextView
+        android:id="@+id/txtSub"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Masuk untuk melanjutkan"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="Masuk dan Mulai aplikasi"
+        android:textColor="#7A848B"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginBottom="32dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtWelcome" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/lblEmail"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:text="Email"
+        android:textColor="#555"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtSub" />
+
+    <EditText
+        android:id="@+id/edtEmail"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_input"
         android:hint="Email"
-        android:layout_marginBottom="16dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:paddingStart="16dp"
+        android:textColor="#000"
+        android:textColorHint="#9AA3AF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lblEmail" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/lblPassword"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_marginBottom="24dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Kata Sandi"
+        android:textColor="#555"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtEmail" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_input"
+        android:drawablePadding="12dp"
+        android:hint="Kata Sandi"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"
+        android:textColor="#000"
+        android:textColorHint="#9AA3AF"
+        app:layout_constraintTop_toBottomOf="@id/lblPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
         android:text="Masuk"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp"/>
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:backgroundTint="#ffb300"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtPassword" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtSignup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:text="Belum Mempunyai Akun? Daftar!"
+        android:textColor="#FFB800"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Belum punya akun? " />
-
-        <TextView
-            android:id="@+id/tvRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Daftar Disini"
-            android:textStyle="bold"
-            android:textColor="@color/design_default_color_primary"
-            android:clickable="true"
-            android:focusable="true"/>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

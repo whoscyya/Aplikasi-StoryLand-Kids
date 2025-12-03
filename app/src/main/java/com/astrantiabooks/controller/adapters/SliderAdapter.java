@@ -1,4 +1,4 @@
-package com.astrantiabooks.adapters;
+package com.astrantiabooks.controller.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

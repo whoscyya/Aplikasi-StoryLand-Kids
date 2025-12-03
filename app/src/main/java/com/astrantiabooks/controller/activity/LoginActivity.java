@@ -1,17 +1,20 @@
-package com.astrantiabooks.controller;
+package com.astrantiabooks.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+// Import Imageview untuk tombol back baru
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView; // Import baru untuk btnBack
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.astrantiabooks.R;
-import com.astrantiabooks.models.LocalData;
-import com.astrantiabooks.models.PrefManager;
-import com.astrantiabooks.models.User;
+import com.astrantiabooks.controller.activity.RegisterActivity; // PERBAIKAN: Tambahkan baris import ini
+import com.astrantiabooks.model.LocalData;
+import com.astrantiabooks.model.PrefManager;
+import com.astrantiabooks.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,9 +24,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etEmail, etPassword;
+    // Mengganti etEmail dengan edtUsername
+    private EditText edtEmail, edtPassword;
     private Button btnLogin;
-    private TextView tvRegister;
+    // Mengganti tvRegister dengan txtSignup
+    private TextView txtSignup;
+    // Menambahkan ImageView untuk tombol back
+    private ImageView btnBack;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -39,30 +46,35 @@ public class LoginActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference();
 
         // Binding Views (Sesuai XML baru)
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
+        edtEmail = findViewById(R.id.edtEmail); // ID BARU
+        edtPassword = findViewById(R.id.edtPassword); // ID BARU
         btnLogin = findViewById(R.id.btnLogin);
-        tvRegister = findViewById(R.id.tvRegister);
+        txtSignup = findViewById(R.id.txtSignup); // ID BARU
+        btnBack = findViewById(R.id.btnBack); // ID BARU
 
         // Jika user sudah login (Auto Login), langsung masuk
         if (mAuth.getCurrentUser() != null) {
             cekRoleDanRedirect(mAuth.getCurrentUser().getUid());
         }
 
+        // Logic Tombol Back baru
+        btnBack.setOnClickListener(v -> finish());
+
         btnLogin.setOnClickListener(v -> prosesLogin());
 
-        tvRegister.setOnClickListener(v -> {
+        // Logic Tombol Daftar/Sign-up baru
+        txtSignup.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
             // Jangan finish(), agar user bisa back ke login jika salah pencet
         });
     }
 
     private void prosesLogin() {
-        String email = etEmail.getText().toString().trim();
-        String pass = etPassword.getText().toString().trim();
+        String email = edtEmail.getText().toString().trim();
+        String pass = edtPassword.getText().toString().trim();
 
         if (email.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(this, "Email dan Password harus diisi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nama Pengguna dan Kata Sandi harus diisi", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -77,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         btnLogin.setEnabled(true);
                         btnLogin.setText("Masuk");
-                        Toast.makeText(LoginActivity.this, "Login Gagal: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Masuk Gagal: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -113,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Data user tidak ditemukan!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Data pengguna tidak ditemukan!", Toast.LENGTH_SHORT).show();
                 }
             }
 

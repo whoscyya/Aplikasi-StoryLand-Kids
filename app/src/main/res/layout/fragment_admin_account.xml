@@ -1,39 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center_horizontal">
+    android:background="@android:color/white">
+
+    <View
+        android:id="@+id/headerView"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#FBC02D"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tvHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profil Admin"
+        android:layout_marginTop="32dp"
+        android:text="Akun"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgAdminProfile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_marginBottom="16dp"/>
-
-    <TextView
-        android:id="@+id/tvAdminEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="admin@astrantia.com"
-        android:textSize="18sp"
-        android:layout_marginBottom="32dp"/>
-
-    <Button
-        android:id="@+id/btnAdminLogout"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout Admin"
-        android:backgroundTint="@android:color/holo_red_light"/>
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="32dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
 
-</LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imgProfileContainer"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_background" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:cardBackgroundColor="#004D40"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/imgProfileContainer"
+                app:layout_constraintEnd_toEndOf="@id/imgProfileContainer">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="6dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="@android:color/white" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvLabelUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Username"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/imgProfileContainer"
+                app:layout_constraintTop_toTopOf="@id/imgProfileContainer" />
+
+            <TextView
+                android:id="@+id/tvUsernameCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="silalahirichard"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/imgProfileContainer"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelUsername" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toEndOf="@id/imgProfileContainer"
+                app:layout_constraintTop_toBottomOf="@id/tvUsernameCard"
+                app:strokeColor="#2E7D6F"
+                app:strokeWidth="1dp">
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/formLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/cardProfile">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Username"
+            android:textColor="@android:color/darker_gray" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#2E7D6F"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <EditText
+                android:id="@+id/et_form_username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingHorizontal="20dp"
+                android:text="silalahirichard"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:maxLines="1" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Email"
+            android:textColor="@android:color/darker_gray" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="0dp"
+            app:strokeColor="#2E7D6F"
+            app:strokeWidth="1dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <EditText
+                android:id="@+id/et_form_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:paddingHorizontal="20dp"
+                android:text="silalahirichardvp@gmail.com"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:maxLines="1"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Simpan Perubahan"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:paddingVertical="12dp"
+        android:backgroundTint="#004D40"
+        app:cornerRadius="25dp"
+        app:layout_constraintTop_toBottomOf="@id/formLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Keluar"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="40dp"
+        android:backgroundTint="#FBC02D"
+        app:cornerRadius="25dp"
+        app:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:iconTint="@android:color/black"
+        app:iconGravity="textStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSaveProfile" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.astrantiabooks.fragments;
+package com.astrantiabooks.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,9 +27,9 @@ import com.astrantiabooks.R;
 import com.astrantiabooks.controller.activity.DetailBukuActivity;
 import com.astrantiabooks.controller.activity.MainActivity;
 import com.astrantiabooks.controller.adapters.UserBukuAdapter;
-import com.astrantiabooks.models.Buku;
-import com.astrantiabooks.models.LocalData;
-import com.astrantiabooks.models.Promotion;
+import com.astrantiabooks.model.Buku;
+import com.astrantiabooks.model.LocalData;
+import com.astrantiabooks.model.Promotion;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
@@ -78,8 +78,7 @@ public class HomeFragment extends Fragment {
 
         // 1. INIT VIEWS
         imgProfile = view.findViewById(R.id.imgProfile);
-        tvGreeting = view.findViewById(R.id.tvGreeting);
-        btnSearch = view.findViewById(R.id.btnSearch);
+        tvGreeting = view.findViewById(R.id.tvGreeting); // PERBAIKAN: Menggunakan ID baru
         viewPagerSlider = view.findViewById(R.id.viewPagerSlider);
         layoutSliderIndicators = view.findViewById(R.id.layoutSliderIndicators);
         rvCategories = view.findViewById(R.id.rvCategories);
@@ -90,7 +89,7 @@ public class HomeFragment extends Fragment {
         layoutHeaderNormal = view.findViewById(R.id.layoutHeaderNormal);
         layoutHeaderSearch = view.findViewById(R.id.layoutHeaderSearch);
         etSearchField = view.findViewById(R.id.etSearchField);
-        btnCloseSearch = view.findViewById(R.id.btnCloseSearch);
+        btnCloseSearch = view.findViewById(R.id.btn_close_search); // PERBAIKAN: Menggunakan ID baru
 
         // 2. SETUP USER INFO
         if (LocalData.currentUser != null) {
@@ -101,9 +100,14 @@ public class HomeFragment extends Fragment {
         }
 
         // --- LOGIC SEARCH BAR (TOGGLE) ---
-        btnSearch.setOnClickListener(v -> openSearchBar());
+        // Penambahan pengecekan null, meskipun setelah perbaikan ID seharusnya tidak lagi null
+        if (btnSearch != null) {
+            btnSearch.setOnClickListener(v -> openSearchBar()); // Line 103 (Fixed)
+        }
 
-        btnCloseSearch.setOnClickListener(v -> closeSearchBar());
+        if (btnCloseSearch != null) {
+            btnCloseSearch.setOnClickListener(v -> closeSearchBar());
+        }
 
         etSearchField.addTextChangedListener(new TextWatcher() {
             @Override

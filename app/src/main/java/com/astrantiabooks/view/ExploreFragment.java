@@ -1,4 +1,4 @@
-package com.astrantiabooks.fragments;
+package com.astrantiabooks.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.astrantiabooks.R;
 import com.astrantiabooks.controller.activity.SearchActivity;
 import com.astrantiabooks.controller.adapters.UserBukuAdapter;
-import com.astrantiabooks.models.Buku;
+import com.astrantiabooks.model.Buku;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

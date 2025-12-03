@@ -1,4 +1,4 @@
-package com.astrantiabooks.controller;
+package com.astrantiabooks.controller.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.astrantiabooks.R;
-import com.astrantiabooks.models.Buku;
+import com.astrantiabooks.model.Buku;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

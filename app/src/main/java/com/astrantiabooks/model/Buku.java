@@ -1,4 +1,4 @@
-package com.astrantiabooks.models;
+package com.astrantiabooks.model;
 import java.io.Serializable;
 
 public class Buku implements Serializable {

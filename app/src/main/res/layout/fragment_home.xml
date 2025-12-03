@@ -58,14 +58,12 @@
                         android:textColor="#757575"/>
                 </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/btnSearch"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_search"
-                    android:background="@drawable/ic_search"
-                    android:elevation="2dp"
-                    android:padding="8dp"/>
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_search"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:elevation="2dp"-->
+<!--                    android:padding="8dp"/>-->
             </LinearLayout>
 
             <LinearLayout
@@ -98,7 +96,7 @@
                     android:inputType="text"/>
 
                 <ImageButton
-                    android:id="@+id/btnCloseSearch"
+                    android:id="@+id/btn_close_search"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@android:drawable/ic_menu_close_clear_cancel"

@@ -29,7 +29,7 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/bg_circle_white"
         android:padding="8dp"
-        android:src="@drawable/back"
+        android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="#000000" />
@@ -107,32 +107,20 @@
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="6dp"
                     tools:text="Fiksi"
-                    android:textColor="#00695C"
+                    android:textColor="#FDB813"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_detail_year"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_button_rounded"
-                    android:backgroundTint="#FFF3E0"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp"
-                    tools:text="2024"
-                    android:textColor="#E65100"
-                    android:textSize="12sp" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_read_synopsis"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:text="Baca Sinopsis"
+                android:text="Baca Buku"
                 app:cornerRadius="25dp"
-                app:strokeColor="#004D40"
+                app:strokeColor="#FFFFFF"
                 app:strokeWidth="1dp"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="#FDB813"
                 android:textColor="#004D40" />
 
         </LinearLayout>

@@ -29,22 +29,17 @@
                     android:id="@+id/tvGreeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Halo, Admin"
+                    android:text="Editor Page"
                     android:textSize="16sp"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Kelola data buku &amp; widget"
-                    android:textSize="12sp"/>
             </LinearLayout>
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/ic_launcher_round"
-                android:background="#EEEEEE"/>
+                android:src="@drawable/ic_search"
+                android:background="#ffffff"/>
 
         </LinearLayout>
 

@@ -44,6 +44,7 @@
             android:id="@+id/btnPilihGambar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#FFB300"
             android:text="Pilih Cover"
             android:layout_gravity="center"
             android:layout_marginBottom="20dp"/>
@@ -103,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Simpan Buku"
+            android:backgroundTint="#FFB300"
             android:layout_marginTop="24dp"/>
 
     </LinearLayout>

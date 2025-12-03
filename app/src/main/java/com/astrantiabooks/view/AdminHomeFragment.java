@@ -1,4 +1,4 @@
-package com.astrantiabooks.fragments;
+package com.astrantiabooks.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,9 +25,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.astrantiabooks.R;
 import com.astrantiabooks.controller.activity.DetailBukuActivity;
 import com.astrantiabooks.controller.adapters.UserBukuAdapter;
-import com.astrantiabooks.models.Buku;
-import com.astrantiabooks.models.LocalData;
-import com.astrantiabooks.models.Promotion;
+import com.astrantiabooks.model.Buku;
+import com.astrantiabooks.model.LocalData;
+import com.astrantiabooks.model.Promotion;
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
@@ -72,7 +72,7 @@ public class AdminHomeFragment extends Fragment {
         // 1. INIT VIEWS
         imgAdminProfile = view.findViewById(R.id.imgAdminProfile);
         tvAdminGreeting = view.findViewById(R.id.tvAdminGreeting);
-        btnAdminSearch = view.findViewById(R.id.btnAdminSearch);
+        btnAdminSearch = view.findViewById(R.id.btn_admin_search); // PERBAIKAN ID
         vpAdminSlider = view.findViewById(R.id.vpAdminSlider);
         layoutAdminIndicators = view.findViewById(R.id.layoutAdminIndicators);
         rvAdminBooksPreview = view.findViewById(R.id.rvAdminBooksPreview);
@@ -80,8 +80,8 @@ public class AdminHomeFragment extends Fragment {
         // Init Search Views
         layoutHeaderNormal = view.findViewById(R.id.layoutHeaderNormal);
         layoutHeaderSearch = view.findViewById(R.id.layoutHeaderSearch);
-        etSearchField = view.findViewById(R.id.etSearchField);
-        btnCloseSearch = view.findViewById(R.id.btnCloseSearch);
+        etSearchField = view.findViewById(R.id.et_search_field); // PERBAIKAN ID
+        btnCloseSearch = view.findViewById(R.id.btn_close_search); // PERBAIKAN ID
 
         // 2. SETUP ADMIN INFO
         if (LocalData.currentUser != null) {
@@ -91,16 +91,21 @@ public class AdminHomeFragment extends Fragment {
         }
 
         // --- FITUR SEARCH BAR ---
-        btnAdminSearch.setOnClickListener(v -> openSearchBar());
-        btnCloseSearch.setOnClickListener(v -> closeSearchBar());
+        // Tambahkan pengecekan null sebelum memanggil setOnClickListener
+        if (btnAdminSearch != null) btnAdminSearch.setOnClickListener(v -> openSearchBar());
+        if (btnCloseSearch != null) btnCloseSearch.setOnClickListener(v -> closeSearchBar());
 
-        etSearchField.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterBySearch(s.toString());
-            }
-            @Override public void afterTextChanged(Editable s) {}
-        });
+        // Tambahkan pengecekan null sebelum memanggil addTextChangedListener
+        if (etSearchField != null) { // PERBAIKAN NPE di sini
+            etSearchField.addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    filterBySearch(s.toString());
+                }
+                @Override public void afterTextChanged(Editable s) {}
+            });
+        }
+
 
         // 3. SETUP SLIDER
         promoAdapter = new PromoAdapter(listPromo);

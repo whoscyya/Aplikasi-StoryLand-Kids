@@ -1,4 +1,4 @@
-package com.astrantiabooks.fragments;
+package com.astrantiabooks.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -20,11 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.astrantiabooks.R;
 import com.astrantiabooks.controller.adapters.AdminBukuAdapter;
-import com.astrantiabooks.models.Buku;
-import com.astrantiabooks.models.Promotion;
+import com.astrantiabooks.model.Buku;
+import com.astrantiabooks.model.Promotion;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -84,11 +83,13 @@ public class AdminAddFragment extends Fragment {
         setupSwitcher();
 
         // ==================== RECYCLER VIEW ====================
-        bookAdapter = new AdminBukuAdapter(getContext(), listBuku);
+        // PERBAIKAN ERROR KONSTRUKTOR: Melewatkan 'this' (AdminAddFragment) sebagai argumen ketiga
+        bookAdapter = new AdminBukuAdapter(getContext(), listBuku, this);
         rvBooks.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rvBooks.setAdapter(bookAdapter);
 
-        widgetAdapter = new AdminWidgetAdapter(getContext(), listWidget);
+        // Melewatkan referensi Fragment untuk mengakses showEditWidgetDialog
+        widgetAdapter = new AdminWidgetAdapter(getContext(), listWidget, this);
         rvWidgets.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvWidgets.setAdapter(widgetAdapter);
 
@@ -98,7 +99,7 @@ public class AdminAddFragment extends Fragment {
             if (r.getResultCode() == getActivity().RESULT_OK && r.getData() != null) {
                 tempUri = r.getData().getData();
                 if (tempImgView != null) {
-                    tempImgView.setImageURI(tempUri); // Tampilkan di ImageView dialog yang aktif
+                    Glide.with(this).load(tempUri).into(tempImgView); // Tampilkan di ImageView dialog yang aktif
                 }
             }
         });
@@ -108,8 +109,8 @@ public class AdminAddFragment extends Fragment {
 
         // ==================== BUTTON ACTION ====================
 
-        // UBAH: Sekarang btnAddBook memanggil Dialog, bukan pindah Activity
-        btnAddBook.setOnClickListener(v -> showAddBookDialog());
+        // UBAH: Sekarang btnAddBook memanggil Dialog untuk Tambah Buku (null = Add Mode)
+        btnAddBook.setOnClickListener(v -> showBookDialog(null));
 
         btnAddWidget.setOnClickListener(v -> showAddWidgetDialog());
 
@@ -117,33 +118,57 @@ public class AdminAddFragment extends Fragment {
     }
 
     // ========================================================
-    // 1. FUNGSI BARU: DIALOG TAMBAH BUKU
+    // 1. FUNGSI UNIFIED: DIALOG TAMBAH/EDIT BUKU
     // ========================================================
-    private void showAddBookDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        // Inflate layout baru yang kita buat tadi
-        View v = getLayoutInflater().inflate(R.layout.dialog_add_book_popup, null);
+    public void showEditBookDialog(Buku bookToEdit) {
+        showBookDialog(bookToEdit);
+    }
+
+    private void showBookDialog(Buku bookToEdit) {
+        Context context = getContext();
+        if (context == null) return;
+        boolean isEditMode = (bookToEdit != null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // MENGGUNAKAN LAYOUT SEDERHANA: dialog_add_book_simple.xml
+        View v = getLayoutInflater().inflate(R.layout.dialog_add_book_simple, null);
         builder.setView(v);
         AlertDialog dialog = builder.create();
 
-        // Init Views dalam Dialog
-        TextInputEditText etTitle = v.findViewById(R.id.etDialogBookTitle);
-        TextInputEditText etAuthor = v.findViewById(R.id.etDialogBookAuthor);
-        TextInputEditText etDesc = v.findViewById(R.id.etDialogBookDesc);
-        AutoCompleteTextView etCategory = v.findViewById(R.id.etDialogBookCategory);
-        ImageView imgPreview = v.findViewById(R.id.imgDialogBookPreview);
-        Button btnPick = v.findViewById(R.id.btnDialogSelectImg);
-        Button btnSave = v.findViewById(R.id.btnDialogSaveBook);
+        // Init Views dalam Dialog (menggunakan ID dari dialog_add_book_simple.xml)
+        EditText etTitle = v.findViewById(R.id.etBookTitleSimple);
+        EditText etAuthor = v.findViewById(R.id.etBookAuthorSimple);
+        EditText etCategory = v.findViewById(R.id.etBookCategorySimple);
+        EditText etDesc = v.findViewById(R.id.etBookDescSimple);
+        ImageView imgPreview = v.findViewById(R.id.imgBookPreviewSimple);
+        Button btnPick = v.findViewById(R.id.btnSelectBookImgSimple);
+        Button btnSave = v.findViewById(R.id.btnSaveBookSimple);
+
+        // Asumsikan ID ini ada di dialog_add_book_simple.xml
+        TextView tvDialogTitle = (TextView) v.findViewById(R.id.tvDialogTitleSimple);
+
+        // Atur teks dialog
+        if (tvDialogTitle != null) {
+            tvDialogTitle.setText(isEditMode ? "Edit Buku" : "Tambah Buku Baru");
+        }
+        btnSave.setText(isEditMode ? "Simpan Perubahan" : "Simpan Buku");
+
+        // --- PRA-ISI DATA JIKA MODE EDIT ---
+        if (isEditMode) {
+            etTitle.setText(bookToEdit.getTitle());
+            etAuthor.setText(bookToEdit.getAuthor());
+            etCategory.setText(bookToEdit.getCategory());
+            etDesc.setText(bookToEdit.getDescription());
+
+            // Load gambar yang sudah ada
+            if (bookToEdit.getCoverUrl() != null && !bookToEdit.getCoverUrl().isEmpty()) {
+                Glide.with(this).load(bookToEdit.getCoverUrl()).into(imgPreview);
+            }
+        }
 
         // Reset variabel gambar
         tempUri = null;
-        tempImgView = imgPreview; // Set target image view ke preview buku
-
-        // Setup Dropdown Kategori
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, CATEGORIES);
-        etCategory.setAdapter(adapter);
-        etCategory.setOnClickListener(view -> etCategory.showDropDown());
-        etCategory.setOnFocusChangeListener((view, hasFocus) -> { if(hasFocus) etCategory.showDropDown(); });
+        tempImgView = imgPreview;
 
         // Klik Pilih Gambar
         btnPick.setOnClickListener(view -> {
@@ -159,46 +184,50 @@ public class AdminAddFragment extends Fragment {
             String category = etCategory.getText().toString();
             String desc = etDesc.getText().toString();
 
+            // Gunakan ID yang ada jika mode edit, buat baru jika mode tambah
+            String bookId = isEditMode ? bookToEdit.getId() : mRef.child("books").push().getKey();
+            // Pertahankan URL lama jika mode edit dan tidak ada gambar baru dipilih
+            String existingImageUrl = isEditMode ? bookToEdit.getCoverUrl() : "";
+
             if (title.isEmpty() || author.isEmpty()) {
-                Toast.makeText(getContext(), "Judul dan Penulis wajib diisi!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Judul dan Penulis wajib diisi!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            ProgressDialog pd = new ProgressDialog(getContext());
-            pd.setMessage("Menyimpan Buku...");
+            ProgressDialog pd = new ProgressDialog(context);
+            pd.setMessage(isEditMode ? "Menyimpan Perubahan..." : "Menyimpan Buku...");
             pd.show();
 
-            // Cek apakah ada gambar yang dipilih
+            // Cek apakah ada gambar yang dipilih (tempUri != null)
             if (tempUri != null) {
-                // Upload Gambar dulu
+                // Upload Gambar baru
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference("book_covers/" + UUID.randomUUID().toString() + ".jpg");
                 storageRef.putFile(tempUri).addOnSuccessListener(task -> {
                     storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        // Setelah upload sukses, simpan data ke database
-                        saveBookToDatabase(title, author, category, desc, uri.toString(), pd, dialog);
+                        // Setelah upload sukses, simpan data ke database dengan URL baru
+                        saveBookToDatabase(bookId, title, author, category, desc, uri.toString(), pd, dialog);
                     });
                 }).addOnFailureListener(e -> {
                     pd.dismiss();
-                    Toast.makeText(getContext(), "Gagal upload gambar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Gagal upload gambar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             } else {
-                // Simpan tanpa gambar (atau gambar default)
-                saveBookToDatabase(title, author, category, desc, "", pd, dialog);
+                // Simpan tanpa gambar baru (gunakan URL lama jika mode edit)
+                saveBookToDatabase(bookId, title, author, category, desc, existingImageUrl, pd, dialog);
             }
         });
 
         dialog.show();
     }
 
-    private void saveBookToDatabase(String title, String author, String category, String desc, String imgUrl, ProgressDialog pd, AlertDialog dialog) {
-        String id = mRef.child("books").push().getKey();
-        Buku buku = new Buku(id, title, author, category, desc, imgUrl);
+    private void saveBookToDatabase(String id, String title, String author, String category, String desc, String imgUrl, ProgressDialog pd, AlertDialog dialog) {
+        Buku buku = new Buku(id, title, author, category, desc, imgUrl); // Gunakan ID yang disediakan
 
         mRef.child("books").child(id).setValue(buku).addOnCompleteListener(task -> {
             pd.dismiss();
             dialog.dismiss();
             if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Buku Berhasil Ditambahkan!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), (mRef.child("books").child(id).getKey().equals(id) ? "Buku Berhasil Diperbarui!" : "Buku Berhasil Ditambahkan!"), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Gagal menyimpan data", Toast.LENGTH_SHORT).show();
             }
@@ -206,14 +235,31 @@ public class AdminAddFragment extends Fragment {
     }
 
     // ========================================================
-    // 2. FUNGSI DIALOG TAMBAH WIDGET (YANG LAMA)
+    // 2. FUNGSI DIALOG TAMBAH WIDGET (Panggilan ke showWidgetDialog)
     // ========================================================
     private void showAddWidgetDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        showWidgetDialog(null);
+    }
+
+    // ========================================================
+    // 3. FUNGSI BARU: DIALOG EDIT WIDGET (API publik untuk Adapter)
+    // ========================================================
+    public void showEditWidgetDialog(Promotion promotionToEdit) {
+        showWidgetDialog(promotionToEdit);
+    }
+
+    private void showWidgetDialog(Promotion promotionToEdit) {
+        Context context = getContext();
+        if (context == null) return;
+
+        boolean isEditMode = (promotionToEdit != null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View v = getLayoutInflater().inflate(R.layout.dialog_add_widget, null);
         builder.setView(v);
         AlertDialog dialog = builder.create();
 
+        // PERBAIKAN: Binding Views (etWidgetTitle, etWidgetSubtitle, dll.)
         EditText etTitle = v.findViewById(R.id.etWidgetTitle);
         EditText etSub = v.findViewById(R.id.etWidgetSubtitle);
         Spinner spinner = v.findViewById(R.id.spinnerTargetBook);
@@ -222,19 +268,54 @@ public class AdminAddFragment extends Fragment {
         Button btnSave = v.findViewById(R.id.btnSaveWidget);
 
         tempUri = null;
-        tempImgView = img; // PENTING: Set target ke preview widget
+        tempImgView = img;
 
-        // Isi spinner dari buku
+        // Menggunakan R.id.textTitle yang diasumsikan sudah ditambahkan di XML dialog_add_widget.xml
+        TextView tvTitleDialog = (TextView) v.findViewById(R.id.textTitle);
+        tvTitleDialog.setText(isEditMode ? "Edit Widget Promo" : "Tambah Widget Promo");
+        btnSave.setText(isEditMode ? "Simpan Perubahan" : "Simpan");
+
+        // Isi spinner dari buku (sama seperti sebelumnya)
         List<String> titles = new ArrayList<>();
         List<String> ids = new ArrayList<>();
-        for (Buku buku : listBuku) {
-            titles.add(buku.getTitle());
-            ids.add(buku.getId());
+        int selectedBookPosition = 0;
+
+        if (listBuku.isEmpty()) {
+            titles.add("Tidak ada buku");
+            ids.add("");
+        } else {
+            for (Buku buku : listBuku) {
+                titles.add(buku.getTitle());
+                ids.add(buku.getId());
+            }
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, titles);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, titles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        // PRA-ISI DATA JIKA MODE EDIT
+        if (isEditMode) {
+            etTitle.setText(promotionToEdit.getTitle());
+            etSub.setText(promotionToEdit.getSubtitle());
+
+            // Load gambar yang sudah ada
+            if (promotionToEdit.getImageUrl() != null && !promotionToEdit.getImageUrl().isEmpty()) {
+                Glide.with(this).load(promotionToEdit.getImageUrl()).into(img);
+            }
+
+            // Set buku target yang dipilih
+            if (promotionToEdit.getTargetBookId() != null) {
+                for (int i = 0; i < ids.size(); i++) {
+                    if (ids.get(i).equals(promotionToEdit.getTargetBookId())) {
+                        selectedBookPosition = i;
+                        break;
+                    }
+                }
+            }
+            spinner.setSelection(selectedBookPosition);
+        }
+
 
         btnPick.setOnClickListener(v1 -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -243,35 +324,59 @@ public class AdminAddFragment extends Fragment {
         });
 
         btnSave.setOnClickListener(v1 -> {
-            if (tempUri == null || etTitle.getText().toString().isEmpty()) {
-                Toast.makeText(getContext(), "Data belum lengkap!", Toast.LENGTH_SHORT).show();
+            String title = etTitle.getText().toString();
+            String sub = etSub.getText().toString();
+
+            if (title.isEmpty() || (!isEditMode && tempUri == null)) {
+                Toast.makeText(context, "Judul dan Gambar wajib diisi!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            ProgressDialog pd = new ProgressDialog(getContext());
-            pd.setMessage("Menyimpan Widget...");
+            ProgressDialog pd = new ProgressDialog(context);
+            pd.setMessage(isEditMode ? "Memperbarui Widget..." : "Menyimpan Widget...");
             pd.show();
 
-            StorageReference storage = FirebaseStorage.getInstance().getReference("widget/" + UUID.randomUUID());
-            storage.putFile(tempUri).addOnSuccessListener(task -> {
-                storage.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String id = mRef.child("promotions").push().getKey();
-                    String bookId = (!ids.isEmpty()) ? ids.get(spinner.getSelectedItemPosition()) : "";
-
-                    Promotion promo = new Promotion(id, etTitle.getText().toString(), etSub.getText().toString(), uri.toString(), bookId);
-                    mRef.child("promotions").child(id).setValue(promo);
-
+            // Jika ada gambar baru dipilih (tempUri != null)
+            if (tempUri != null) {
+                // Upload Gambar
+                StorageReference storage = FirebaseStorage.getInstance().getReference("widget/" + UUID.randomUUID());
+                storage.putFile(tempUri).addOnSuccessListener(task -> {
+                    storage.getDownloadUrl().addOnSuccessListener(uri -> {
+                        // Simpan/Update data dengan URL baru
+                        saveOrUpdateWidget(
+                                isEditMode ? promotionToEdit.getId() : mRef.child("promotions").push().getKey(),
+                                title, sub, uri.toString(), ids.get(spinner.getSelectedItemPosition()), pd, dialog
+                        );
+                    });
+                }).addOnFailureListener(e -> {
                     pd.dismiss();
-                    dialog.dismiss();
-                    Toast.makeText(getContext(), "Widget berhasil ditambahkan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Gagal upload: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-            }).addOnFailureListener(e -> {
-                pd.dismiss();
-                Toast.makeText(getContext(), "Gagal upload", Toast.LENGTH_SHORT).show();
-            });
+            } else {
+                // Mode EDIT TANPA upload gambar baru, gunakan URL gambar lama
+                String oldImageUrl = isEditMode ? promotionToEdit.getImageUrl() : "";
+                saveOrUpdateWidget(
+                        isEditMode ? promotionToEdit.getId() : mRef.child("promotions").push().getKey(),
+                        title, sub, oldImageUrl, ids.get(spinner.getSelectedItemPosition()), pd, dialog
+                );
+            }
         });
 
         dialog.show();
+    }
+
+    private void saveOrUpdateWidget(String id, String title, String sub, String imageUrl, String bookId, ProgressDialog pd, AlertDialog dialog) {
+        Promotion promo = new Promotion(id, title, sub, imageUrl, bookId);
+
+        mRef.child("promotions").child(id).setValue(promo).addOnCompleteListener(task -> {
+            pd.dismiss();
+            dialog.dismiss();
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Widget Berhasil Disimpan!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Gagal menyimpan data: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // ========================================================
@@ -329,10 +434,13 @@ public class AdminAddFragment extends Fragment {
 
         Context ctx;
         List<Promotion> list;
+        AdminAddFragment fragment;
 
-        public AdminWidgetAdapter(Context ctx, List<Promotion> list) {
+        // Perbarui konstruktor
+        public AdminWidgetAdapter(Context ctx, List<Promotion> list, AdminAddFragment fragment) {
             this.ctx = ctx;
             this.list = list;
+            this.fragment = fragment;
         }
 
         @NonNull
@@ -349,7 +457,7 @@ public class AdminAddFragment extends Fragment {
 
             // Set Data ke View
             holder.title.setText(p.getTitle());
-            holder.subtitle.setText(p.getSubtitle()); // Pastikan field subtitle ada di model Promotion
+            holder.subtitle.setText(p.getSubtitle());
 
             if (p.getImageUrl() != null && !p.getImageUrl().isEmpty()) {
                 Glide.with(ctx).load(p.getImageUrl()).into(holder.img);
@@ -357,10 +465,10 @@ public class AdminAddFragment extends Fragment {
                 holder.img.setImageResource(R.drawable.ic_launcher_background);
             }
 
-            // Tombol Edit (Sementara Toast dulu atau logika edit nanti)
+            // Tombol EDIT
             holder.btnEdit.setOnClickListener(v -> {
-                Toast.makeText(ctx, "Edit Widget: " + p.getTitle(), Toast.LENGTH_SHORT).show();
-                // TODO: Tambahkan logika buka dialog edit widget di sini jika diperlukan
+                // Panggil fungsi edit widget
+                fragment.showEditWidgetDialog(p);
             });
 
             // Tombol Hapus
@@ -386,17 +494,16 @@ public class AdminAddFragment extends Fragment {
         class Holder extends RecyclerView.ViewHolder {
             TextView title, subtitle;
             ImageView img;
-            ImageButton btnEdit, btnDelete; // Menggunakan ImageButton
+            ImageButton btnEdit, btnDelete;
 
             public Holder(@NonNull View itemView) {
                 super(itemView);
                 title = itemView.findViewById(R.id.tvAdminWidgetTitle);
-                subtitle = itemView.findViewById(R.id.tvAdminWidgetSubtitle); // Tambahan subtitle
+                subtitle = itemView.findViewById(R.id.tvAdminWidgetSubtitle);
                 img = itemView.findViewById(R.id.imgAdminWidget);
-                btnEdit = itemView.findViewById(R.id.btnEditWidget);     // ID Baru
-                btnDelete = itemView.findViewById(R.id.btnDeleteWidget); // ID Baru
+                btnEdit = itemView.findViewById(R.id.btnEditWidget);
+                btnDelete = itemView.findViewById(R.id.btnDeleteWidget);
             }
         }
     }
-
 }

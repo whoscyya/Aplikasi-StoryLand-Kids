@@ -1,4 +1,4 @@
-package com.astrantiabooks.controller;
+package com.astrantiabooks.controller.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -14,7 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.astrantiabooks.R;
-import com.astrantiabooks.models.Buku;
+import com.astrantiabooks.model.Buku;
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;

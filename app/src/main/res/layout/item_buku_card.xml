@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="140dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="8dp">
+    app:cardBackgroundColor="@color/surface_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,79 +16,53 @@
         android:paddingBottom="12dp">
 
         <ImageView
-            android:id="@+id/imgBookCover"
+            android:id="@+id/img_book_cover"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_cover_placeholder"
-            android:background="@android:color/darker_gray"
+            android:src="@drawable/default_book"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_heart"
-            android:layout_margin="8dp"
-            app:tint="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
         <TextView
-            android:id="@+id/tvBookTitle"
+            android:id="@+id/tv_book_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Judul Buku"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            tools:text="Judul Buku"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="14sp"
             android:maxLines="2"
             android:ellipsize="end"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@id/imgBookCover"
+            app:layout_constraintTop_toBottomOf="@id/img_book_cover"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/tvBookAuthor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Penulis"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tvBookTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <LinearLayout
+            android:id="@+id/tv_book_genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
+            tools:text="Fiksi"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tvBookAuthor"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tv_book_title"
+            app:layout_constraintStart_toStartOf="@id/tv_book_title"/>
 
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ic_star"
-                app:tint="#FFD700"/>
-
-            <TextView
-                android:id="@+id/tvRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.5"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginStart="4dp"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_book_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Penulis Buku"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintTop_toBottomOf="@id/tv_book_genre"
+            app:layout_constraintStart_toStartOf="@id/tv_book_title"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

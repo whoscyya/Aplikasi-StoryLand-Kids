@@ -6,7 +6,7 @@
     android:padding="20dp">
 
     <TextView
-        android:text="Tambah Widget Promo"
+        android:id="@+id/textTitle"  android:text="Tambah Widget Promo"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
     <Button
         android:id="@+id/btnSelectWidgetImg"
         android:text="Pilih Cover Widget"
+        android:backgroundTint="#FDB813"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
@@ -51,6 +52,7 @@
     <Button
         android:id="@+id/btnSaveWidget"
         android:text="Simpan"
+        android:backgroundTint="#FDB813"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"/>

@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pilih Cover Buku"
-            android:backgroundTint="#6200EE"
+            android:backgroundTint="#FDB813"
             android:layout_marginBottom="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:text="Simpan Buku"
-            android:backgroundTint="#6200EE"
+            android:backgroundTint="#FDB813"
             android:layout_marginTop="24dp"/>
 
     </LinearLayout>

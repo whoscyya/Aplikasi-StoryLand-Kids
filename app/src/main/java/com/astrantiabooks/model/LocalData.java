@@ -1,6 +1,5 @@
-package com.astrantiabooks.models;
+package com.astrantiabooks.model;
 
-import com.astrantiabooks.R;
 import java.util.ArrayList;
 import java.util.List;
 
