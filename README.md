@@ -31,8 +31,11 @@
   <li><b>Android Studio</b></li>
   <li><b>Git</b> (untuk meng-kloning repository)</li>
 </ul
-  
-<h2>🎨HASIL PROJECT</h2>
+
+
+<hr />
+<h3>🎨HASIL PROJECT</h3>
+
 <p style="text-align:center;">
   <img height="400" src="https://github.com/user-attachments/assets/330bba1d-e80e-49c0-b75c-a7b6930340ba" />
   <img height="400" src="https://github.com/user-attachments/assets/5678eea9-5c73-423d-a5dd-93d0a74e052c" />
